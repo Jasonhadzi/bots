@@ -6,27 +6,21 @@ except ImportError as e:
     raise e
 
 # login credentials
-insta_username = config.config["user"]
-insta_password = config.config["pass"]
+for key, value in config.config.items():
+    insta_username = value["user"]
+    insta_password = value["pass"]
 
-#path to your workspace
-#set_workspace(path="/Users/jasonhadzikostas")
+    tags_to_like = value["tags"]
+    tags_to_not_like = ["naked", "nsfw","bot","scam","fake"]
 
-tags_to_like =["startup","socialmedia"]
-tags_to_not_like = ["naked", "nsfw","bot","scam","fake"]
+    session = InstaPy(username=insta_username, password=insta_password,bypass_security_challenge_using='sms',
+                      headless_browser=True,
+                      disable_image_load=True,
+                      multi_logs=True)
 
-
-session = InstaPy(username=insta_username, password=insta_password,bypass_security_challenge_using='sms',
-                  headless_browser=True,
-                  disable_image_load=True,
-                  multi_logs=True)
-
-
-
-with smart_run(session):
+    with smart_run(session):
         """ Activity flow """
         # general settings
-    
         #Skip private account
         #Skip users that don't have profile picture
         session.set_skip_users(skip_private=True,
