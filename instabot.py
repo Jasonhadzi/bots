@@ -30,7 +30,7 @@ for key, value in config.config.items():
         #This is used to check the number of existing likes a post has 
         #and if it either exceed the maximum value set OR does not pass the minimum value set 
         #then it will not like that post
-        session.set_delimit_liking(enabled=True, max_likes=2005, min_likes=5)
+        session.set_delimit_liking(enabled=True, max_likes=2005, min_likes=0)
     
         #Your bot won’t interact with posts by users who have more than 8,500 followers.
         session.set_relationship_bounds(enabled=True,min_posts=10,
@@ -39,10 +39,10 @@ for key, value in config.config.items():
     
         # activity
         # Like posts based on hashtags and like 5 posts of its poster
-        session.set_user_interact(amount=5, randomize=True, percentage=100, media='Photo')
+        session.set_user_interact(amount=10, randomize=True, percentage=100, media='Photo')
         #By default, InstaPy will like the first nine top posts in addition to your amount value. In this case, 
         #that brings the total number of likes per tag to ten (nine top posts plus the one you specified in amount).
-        session.like_by_tags(tags_to_like, amount=6, interact=True)
+        session.like_by_tags(tags_to_like, amount=11, interact=True)
     
 
         #You can tell the bot to not only like the posts but also 
