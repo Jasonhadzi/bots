@@ -10,7 +10,7 @@ except ImportError as e:
 
 # get a session!
 session = InstaPy(username=config.insta_account['user'],
-password=config.insta_account['pass'],bypass_security_challenge_using='sms',headless_browser=False,disable_image_load=True, multi_logs=True)
+password=config.insta_account['pass'],bypass_security_challenge_using='sms',headless_browser=True,disable_image_load=True, multi_logs=True)
 
 
 tags_to_not_like =  ['dick', 'elections','fakenews','crypto','trade','trading','fake','news', 'squirt', 'gay', 'homo', '#fit', '#fitfam', '#fittips',
