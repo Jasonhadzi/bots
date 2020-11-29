@@ -1,3 +1,4 @@
+import random
 from instapy import InstaPy
 from instapy import smart_run
 try:
@@ -11,59 +12,59 @@ for key, value in config.config.items():
     insta_password = value["pass"]
 
     tags_to_like = value["tags"]
-    tags_to_not_like = ["naked", "nsfw","bot","scam","fake"]
+    tags_to_not_like =  ['dick', 'elections','fakenews','crypto','trade','trading','fake','news', 'squirt', 'gay', 'homo', '#fit', '#fitfam', '#fittips',
+         '#abs', '#kids', '#children', '#child',
+         '[nazi','bot',
+         'jew', 'judaism', '[muslim', '[islam', 'bangladesh', '[hijab',
+         '[niqab', '[farright', '[rightwing',
+         '#conservative', 'death', 'racist']
+
+    photo_comments = ['Nice shot! @{}',
+    'Awesome! @{}',
+    'Cool :thumbsup:',
+    'Just incredible :open_mouth:',
+    'Love your posts @{}',
+    'Looks awesome @{}',
+    'Nice @{}',
+    'Wow',
+    'Amazing',
+    ':raised_hands: Yes!',
+    'I can feel your passion @{} :muscle:']
 
     session = InstaPy(username=insta_username, password=insta_password,bypass_security_challenge_using='sms',
                       headless_browser=True,
                       disable_image_load=True,
                       multi_logs=True)
 
-    with smart_run(session):
-        """ Activity flow """
-        # general settings
-        #Skip private account
-        #Skip users that don't have profile picture
-        session.set_skip_users(skip_private=True,
-                       private_percentage=100,
-                       skip_no_profile_pic=True,
-                       no_profile_pic_percentage=100)
-        #This is used to check the number of existing likes a post has 
-        #and if it either exceed the maximum value set OR does not pass the minimum value set 
-        #then it will not like that post
-        session.set_delimit_liking(enabled=True, max_likes=2005, min_likes=0)
-    
-        #Your bot won’t interact with posts by users who have more than 8,500 followers.
-        session.set_relationship_bounds(enabled=True,min_posts=10,
-                                 max_posts=500, max_followers=8500)
-        session.set_dont_like(tags_to_not_like)
-    
-        # activity
-        # Like posts based on hashtags and like 5 posts of its poster
-        session.set_user_interact(amount=10, randomize=True, percentage=100, media='Photo')
-        #By default, InstaPy will like the first nine top posts in addition to your amount value. In this case, 
-        #that brings the total number of likes per tag to ten (nine top posts plus the one you specified in amount).
-        session.like_by_tags(tags_to_like, amount=11, interact=True)
     
 
-        #You can tell the bot to not only like the posts but also 
-        #to follow some of the authors of those posts. You can do that with set_do_follow():
-        #percentage 50% means follow half the users whose posts it liked
-        session.set_do_follow(True, percentage=50)
+    with smart_run(session):
+        """ Activity flow """
+
+        session.set_mandatory_language(enabled=True, character_set=['LATIN', 'GREEK'])
+
+        session.set_relationship_bounds(enabled=True,
+                                    potency_ratio=-1.21,
+                                    delimit_by_numbers=True,
+                                    max_followers=4590,
+                                    max_following=5555,
+                                    min_followers=45,
+                                    min_following=77)
+
+        session.set_dont_like(tags_to_not_like)
     
-    
-        """ Joining Engagement Pods...
-        """
-        photo_comments = ['Nice shot! @{}',
-        'Awesome! @{}',
-        'Cool :thumbsup:',
-        'Just incredible :open_mouth:',
-        'Love your posts @{}',
-        'Looks awesome @{}',
-        'Nice @{}',
-        ':raised_hands: Yes!',
-        'I can feel your passion @{} :muscle:']
-    
-    
+
+        session.set_user_interact(amount=5, randomize=True, percentage=80)
+        session.set_do_follow(enabled=True, percentage=70)
+        session.set_do_like(enabled=True, percentage=100)
+
+    # activity
+        session.like_by_tags(tags_to_like,
+                         amount=random.randint(50, 100), interact=True)
+
+        session.unfollow_users(amount=random.randint(75, 150),
+                           instapy_followed_enabled=True, instapy_followed_param="nonfollowers", style="FIFO",
+                           unfollow_after=90 * 60 * 60, sleep_delay=501)
+
         session.set_do_comment(enabled = True, percentage = 95)
         session.set_comments(photo_comments, media = 'Photo')
-        session.join_pods(topic='entertainment', engagement_mode='no_comments')
